@@ -4,7 +4,7 @@ fn main() -> color_eyre::Result<()> {
 }
 
 fn part2() -> color_eyre::Result<()> {
-    let mut score = 0;
+    let mut score = 1;
 
     Ok(())
 }
