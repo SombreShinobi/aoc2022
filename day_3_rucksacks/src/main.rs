@@ -28,7 +28,6 @@ fn part2() -> color_eyre::Result<()> {
                 if first_item == second_item {
                     for third_item in &third_rucksack {
                         if second_item == third_item {
-                            dbg!(index, third_item);
                            score += third_item.priority();
                             break 'outer;
                         }
