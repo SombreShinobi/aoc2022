@@ -1,10 +1,44 @@
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
-    part1()
+    // part1()
+    part2()
 }
 
 fn part2() -> color_eyre::Result<()> {
     let mut score = 0;
+    let text: Vec<&str> = include_str!("input.txt").lines().collect();
+    for (index, _) in text.iter().enumerate().step_by(3) {
+        let first_rucksack = text[index]
+            .bytes()
+            .map(Item::try_from)
+            .collect::<Result<Vec<_>, _>>()?;
+
+        let second_rucksack = text[index + 1]
+            .bytes()
+            .map(Item::try_from)
+            .collect::<Result<Vec<_>, _>>()?;
+
+        let third_rucksack = text[index + 2]
+            .bytes()
+            .map(Item::try_from)
+            .collect::<Result<Vec<_>, _>>()?;
+
+        'outer: for first_item in &first_rucksack {
+            for second_item in &second_rucksack {
+                if first_item == second_item {
+                    for third_item in &third_rucksack {
+                        if second_item == third_item {
+                            dbg!(index, third_item);
+                           score += third_item.priority();
+                            break 'outer;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    println!("The score is: {score}");
 
     Ok(())
 }
