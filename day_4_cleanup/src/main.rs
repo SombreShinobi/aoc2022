@@ -2,7 +2,7 @@ use std::str::FromStr;
 
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
-    // part_1()
+    part_1()?;
     part_2()
 }
 
@@ -33,7 +33,7 @@ fn part_2() -> color_eyre::Result<()> {
         }
     }
 
-    println!("The number of containing pairs is {containing_pairs}");
+    println!("The number of overlapping pairs is {containing_pairs}");
 
     Ok(())
 }
