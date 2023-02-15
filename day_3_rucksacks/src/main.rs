@@ -1,7 +1,39 @@
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
-    // part1()
+    part1()?;
     part2()
+}
+
+fn part1() -> color_eyre::Result<()> {
+    let mut score = 0;
+
+    for sack in include_str!("input.txt").lines() {
+        let (first, second) = sack.split_at(sack.len() / 2);
+
+        let first: Vec<Item> = first
+            .bytes()
+            .map(Item::try_from)
+            .collect::<Result<Vec<_>, _>>()?;
+
+        let second: Vec<Item> = second
+            .bytes()
+            .map(Item::try_from)
+            .collect::<Result<Vec<_>, _>>()?;
+
+        'outer: for item in &first {
+            for second_item in &second {
+                if item == second_item {
+                    score += item.priority();
+                    break 'outer;
+                }
+            }
+        }
+
+        println!("{first:?} | {second:?}");
+    }
+    println!("Part 1: The score is: {score}");
+
+    Ok(())
 }
 
 fn part2() -> color_eyre::Result<()> {
@@ -37,39 +69,7 @@ fn part2() -> color_eyre::Result<()> {
         }
     }
     
-    println!("The score is: {score}");
-
-    Ok(())
-}
-
-fn part1() -> color_eyre::Result<()> {
-    let mut score = 0;
-
-    for sack in include_str!("input.txt").lines() {
-        let (first, second) = sack.split_at(sack.len() / 2);
-
-        let first: Vec<Item> = first
-            .bytes()
-            .map(Item::try_from)
-            .collect::<Result<Vec<_>, _>>()?;
-
-        let second: Vec<Item> = second
-            .bytes()
-            .map(Item::try_from)
-            .collect::<Result<Vec<_>, _>>()?;
-
-        'outer: for item in &first {
-            for second_item in &second {
-                if item == second_item {
-                    score += item.priority();
-                    break 'outer;
-                }
-            }
-        }
-
-        println!("{first:?} | {second:?}");
-    }
-    println!("The score is: {score}");
+    println!("Part 2: The score is: {score}");
 
     Ok(())
 }
