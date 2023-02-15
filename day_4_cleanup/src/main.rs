@@ -2,7 +2,8 @@ use std::str::FromStr;
 
 fn main() -> color_eyre::Result<()> {
     color_eyre::install()?;
-    part_1()
+    // part_1()
+    part_2()
 }
 
 fn part_1() -> color_eyre::Result<()> {
@@ -12,6 +13,22 @@ fn part_1() -> color_eyre::Result<()> {
         let pair = Pair::from_str(pair)?;
 
         if pair.contains() {
+            containing_pairs += 1;
+        }
+    }
+
+    println!("The number of containing pairs is {containing_pairs}");
+
+    Ok(())
+}
+
+fn part_2() -> color_eyre::Result<()> {
+    let mut containing_pairs = 0;
+
+    for pair in include_str!("input.txt").lines() {
+        let pair = Pair::from_str(pair)?;
+
+        if pair.overlaps() {
             containing_pairs += 1;
         }
     }
@@ -89,8 +106,15 @@ impl Pair {
     }
 }
 
-// enum Overlaps {
-//     Overlaps,
-//     Contains,
-//     NoOverlap,
-// }
+impl Pair {
+    fn overlaps(&self) -> bool {
+        ((self.elf1.start_section <= self.elf2.start_section
+            && self.elf2.start_section <= self.elf1.end_section)
+            || (self.elf1.start_section <= self.elf2.end_section
+                && self.elf2.end_section <= self.elf1.end_section))
+            || ((self.elf2.start_section <= self.elf1.start_section
+                && self.elf1.start_section <= self.elf2.start_section)
+                || (self.elf2.start_section <= self.elf1.end_section
+                    && self.elf1.end_section <= self.elf2.end_section))
+    }
+}
